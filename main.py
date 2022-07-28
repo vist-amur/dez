@@ -3,13 +3,15 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.core.window import Window
 from kivymd.uix.menu import MDDropdownMenu
 from kivy.lang import Builder
+from kivymd.uix.pickers import MDDatePicker
+import datetime
 #from tkinter import *
 
 # root = Tk()
 # monitor_height = root.winfo_screenheight()
 # monitor_width = root.winfo_screenwidth()
 
-Window.maximize()
+#Window.maximize()
 #Window.size = (monitor_width , monitor_height)
 
 # class Container(MDBoxLayout):
@@ -27,7 +29,17 @@ class Dez(MDApp):
             position="bottom",
             width_mult=4,
         )
+        self.date_dialog = MDDatePicker(background_color=(0.1,0.1,0.1,1.0))
         self.menu.bind()
+        self.date_dialog.bind(on_save=self.on_save_date, on_cancel=self.on_cancel_date)
+
+
+
+    def on_save_date(self, instance, value, date_range):
+        self.screen.ids.expiration.text = str(value)
+
+    def on_cancel_date(self, instance, value):
+        pass
 
     def set_item(self, instance):
         self.screen.ids.proizv.text = instance
