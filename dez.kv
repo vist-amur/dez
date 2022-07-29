@@ -9,71 +9,86 @@ Screen:
         Widget:
 
     MDNavigationLayout:
-        ScreenManager:
+        MDScreenManager:
             id: screen_manager
+           # MDScreen:
             Screen:
                 name: "scr1"
-                ScrollView:
-                    bar_width: 4
-                    StackLayout:
-                        padding: "50dp"
-                        spacing: 3
-                        size_hint_y: None
-                        height: self.minimum_height
-                        MDTextField:
-                            id: type
-                            hint_text: "Тип дезсредства"
-                            helper_text: "Концентрат, антисептик, мыло и т.д. "
-                            helper_text_mode: "on_focus"
-                        MDTextField:
-                            id: proizv
-                            hint_text: "Производитель"
-                            helper_text: "Наименование производителя"
-                            helper_text_mode: "on_focus"
-                            on_focus: if self.focus: app.menu.open()
+                BoxLayout:
+                    size_hint_y: 0.91
+                    #size_hint: (None, 0.2)
+                    #height: 10
+                    ScrollView:
+                        do_scroll_x: False
+                        do_scroll_y: True
+                        StackLayout:
+                            padding: "50dp"
+                            spacing: 4
+                            size_hint_y: None
+                            height: self.minimum_height
+                            MDTextField:
+                                id: type
+                                hint_text: "Тип дезсредства"
+                                helper_text: "Концентрат, антисептик, мыло и т.д. "
+                                helper_text_mode: "on_focus"
+                            MDTextField:
+                                id: proizv
+                                hint_text: "Производитель"
+                                helper_text: "Наименование производителя"
+                                helper_text_mode: "on_focus"
+                                on_focus: if self.focus: app.menu.open()
+                            MDTextField:
+                                id: name
+                                hint_text: "Наименование"
+                                helper_text: "Наименование дезсредства"
+                                helper_text_mode: "on_focus"
+                            MDTextField:
+                                id: structure
+                                hint_text: "Состав"
+                                helper_text: "Состав дезсредства"
+                                helper_text_mode: "on_focus"
+                                multiline: True
+                            MDTextField:
+                                id: used
+                                hint_text: "Области применения"
+                                helper_text: "Области применения"
+                                helper_text_mode: "on_focus"
+                                multiline: True
+                            MDTextField:
+                                id: expiration
+                                hint_text: "Срок годности"
+                                helper_text: "Срок годности, г."
+                                helper_text_mode: "on_focus"
+                                #on_focus: if self.focus: app.date_dialog.open()
+                            MDTextField:
+                                id: packing
+                                hint_text: "Фасовка"
+                                helper_text: "Фасовка в л. через запятую."
+                                helper_text_mode: "on_focus"
+                                #on_focus: if self.focus: app.date_dialog.open()
+                            MDTextField:
+                                id: comment
+                                hint_text: "Комментарий"
+                                helper_text: "Комментарий"
+                                helper_text_mode: "on_focus"
+                                multiline: True
+                StackLayout:
+                    orientation: "tb-rl"
+                    padding: "10dp"
+                    spacing: 4
+                    #size_hint_x: 0.94
+                    size_hint_y: 0.1
+                    #height: 30
+                    MDFillRoundFlatIconButton:
+                        icon: "android"
+                        text: "Сохранить"
+                        #pos_hint: {"center_x": 1.0, "center_y": 1.0}
+                        size_hint: [.2, .1]
+#                    MDLabel:
+#                        text: "A"
+#                        size_hint: [.2, .1]
 
-                        MDTextField:
-                            id: name
-                            hint_text: "Наименование"
-                            helper_text: "Наименование дезсредства"
-                            helper_text_mode: "on_focus"
-                        MDTextField:
-                            id: structure
-                            hint_text: "Состав"
-                            helper_text: "Состав дезсредства"
-                            helper_text_mode: "on_focus"
-                            multiline: True
-                        MDTextField:
-                            id: used
-                            hint_text: "Области применения"
-                            helper_text: "Области применения"
-                            helper_text_mode: "on_focus"
-                            multiline: True
-                        MDTextField:
-                            id: expiration
-                            hint_text: "Срок годности"
-                            helper_text: "Срок годности, г."
-                            helper_text_mode: "on_focus"
-                            #on_focus: if self.focus: app.date_dialog.open()
-                        MDTextField:
-                            id: packing
-                            hint_text: "Фасовка"
-                            helper_text: "Фасовка в л. через запятую."
-                            helper_text_mode: "on_focus"
-                            #on_focus: if self.focus: app.date_dialog.open()
-                        MDTextField:
-                            id: comment
-                            hint_text: "Комментарий"
-                            helper_text: "Комментарий"
-                            helper_text_mode: "on_focus"
-                            multiline: True
-                MDRoundFlatIconButton:
-                    icon: "android"
-                    text: "MDROUNDFLATICONBUTTON"
-                    pos_hint: {"center_x": .5, "center_y": .02}
-                MDLabel:
-                    text: "v.1.0"
-                    pos_hint: {"center_x": .99, "center_y": .1}
+
             Screen:
                 name: "scr2"
                 MDLabel:
@@ -111,7 +126,7 @@ Screen:
             MDList:
                 OneLineAvatarListItem:
                     on_press:
-                        root.func()
+                       # root.func()
                         screen_manager.current = "scr1"
                         nav_draw.set_state('close')
                     text: "Добавить дезсредство"
