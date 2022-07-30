@@ -9,7 +9,7 @@ Screen:
         Widget:
 
     MDNavigationLayout:
-        MDScreenManager:
+        ScreenManager:
             id: screen_manager
            # MDScreen:
             Screen:
@@ -31,6 +31,7 @@ Screen:
                                 hint_text: "Тип дезсредства"
                                 helper_text: "Концентрат, антисептик, мыло и т.д. "
                                 helper_text_mode: "on_focus"
+                                on_focus: if self.focus: app.typedez.open()
                             MDTextField:
                                 id: proizv
                                 hint_text: "Производитель"
@@ -84,6 +85,7 @@ Screen:
                         text: "Сохранить"
                         #pos_hint: {"center_x": 1.0, "center_y": 1.0}
                         size_hint: [.2, .1]
+                        on_release: app.rec_to_base()
 #                    MDLabel:
 #                        text: "A"
 #                        size_hint: [.2, .1]
@@ -91,9 +93,23 @@ Screen:
 
             Screen:
                 name: "scr2"
-                MDLabel:
-                    text: "Dezreestr version 1.0"
-                    halign: "center"
+                StackLayout:
+                    orientation: "lr-tb"
+                    #padding: "10dp"
+                    #spacing: 4
+                    #size_hint_x: 0.94
+                    #size_hint_y: 1.0
+#                    MDLabel:
+#                        text: "Dezreestr version 1.0"
+#                        halign: "center"
+                    Image:
+                        source: "mascot.png"
+                StackLayout:
+                    orientation: "lr-bt"
+                    MDLabel:
+                        text: "Dezreestr version 1.0"
+                        halign: "center"
+                        size_hint: [1.05, None]
 
     MDNavigationDrawer:
         id: nav_draw
@@ -108,8 +124,8 @@ Screen:
             Image:
                 id: avatar
                 size_hint: None, None
-                size: "56dp", "56dp"
-                source: "data/logo/kivy-icon-256.png"
+                size: "100dp", "100dp"
+                source: "logo.png"
 #            MDLabel:
 #                text: "Kaustubh Gupta"
 #                font_style: "Button"
