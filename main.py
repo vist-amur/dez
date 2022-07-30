@@ -92,6 +92,7 @@ class Dez(MDApp):
                 cursor.execute(sql, (hash_field, p_list[0], p_list[1], p_list[2], p_list[3],p_list[4],p_list[5],p_list[6],p_list[7]))
                 connection.commit()
                 self.show_information_dialog("Запись прошла успешно!")
+                self.clear_fileds()
             else:
                 self.show_information_dialog("Такая запись уже существует!")
         except:
@@ -140,4 +141,12 @@ class Dez(MDApp):
     def close_dialog(self, obj):
         self.dialog.dismiss()
 
+    def clear_fileds(self):
+        for i in self.screen.ids:
+            try:
+                str_v = self.screen.ids[i].text.strip()
+                if len(str_v) > 0:
+                    self.screen.ids[i].text = ""
+            except:
+                pass
 Dez().run()
