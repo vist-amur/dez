@@ -11,6 +11,7 @@ import datetime
 import pymysql
 import hashlib
 import kivymd as kkk
+from kivy.config import Config
 #from tkinter import *
 
 # root = Tk()
@@ -64,6 +65,8 @@ class Dez(MDApp):
         self.typedez.dismiss()
 
     def build(self):
+        #Config.set('kivy', 'window_icon', 'icon.ico')
+        self.icon = 'mascot.png'
         self.theme_cls.primary_palette = "BlueGray"
         self.theme_cls.primary_hue = "300"
         self.theme_cls.theme_style = "Light"
