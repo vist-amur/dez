@@ -5,7 +5,7 @@ Screen:
         MDToolbar:
             title: "Дезреестр"
             left_action_items: [["menu", lambda x: nav_draw.set_state()]]
-            md_bg_color: '#b5b8b1'
+            #md_bg_color: '#9e908b'
         Widget:
 
     MDNavigationLayout:
@@ -19,7 +19,7 @@ Screen:
                     #size_hint: (None, 0.2)
                     #height: 10
                     ScrollView:
-                        do_scroll_x: False
+                        do_scroll_x: True
                         do_scroll_y: True
                         StackLayout:
                             padding: "50dp"
@@ -31,6 +31,7 @@ Screen:
                                 hint_text: "Тип дезсредства"
                                 helper_text: "Концентрат, антисептик, мыло и т.д. "
                                 helper_text_mode: "on_focus"
+                                color_normal: 0, 1, 0, 1
                                 on_focus: if self.focus: app.typedez.open()
                             MDTextField:
                                 id: proizv
@@ -74,17 +75,18 @@ Screen:
                                 helper_text_mode: "on_focus"
                                 multiline: True
                 StackLayout:
-                    orientation: "tb-rl"
+                    orientation: "bt-rl"
                     padding: "10dp"
                     spacing: 4
-                    #size_hint_x: 0.94
-                    size_hint_y: 0.1
+                    #size_hint_x: None
+                    #size_hint_y: 0.9
                     #height: 30
+                    #pos_hint: {"center_x": 1.3, "center_y": .5}
                     MDFillRoundFlatIconButton:
                         icon: "android"
                         text: "Сохранить"
-                        #pos_hint: {"center_x": 1.0, "center_y": 1.0}
-                        size_hint: [.2, .1]
+                        #pos_hint: {"center_x": .3, "center_y": .5}
+
                         on_release: app.rec_to_base()
 #                    MDLabel:
 #                        text: "A"
@@ -110,6 +112,16 @@ Screen:
                         text: "Dezreestr version 1.0"
                         halign: "center"
                         size_hint: [1.05, None]
+#            Screen:
+#                name: "scr3"
+#                StackLayout:
+#                    orientation: "lr-bt"
+#                    MDFillRoundFlatIconButton:
+#                        icon: "android"
+#                        text: "Выбрать цветовую счему"
+#                        #pos_hint: {"center_x": 1.0, "center_y": 1.0}
+#                        size_hint: [.2, .1]
+#                        on_release: app.show_theme_picker()
 
     MDNavigationDrawer:
         id: nav_draw
@@ -155,5 +167,13 @@ Screen:
                     text: "About"
                     IconLeftWidget:
                         icon: 'information'
+#                OneLineAvatarListItem:
+#                    on_press:
+#                       # root.func()
+#                        screen_manager.current = "scr3"
+#                        nav_draw.set_state('close')
+#                    text: "Цветовая схема"
+#                    IconLeftWidget:
+#                        icon: "paint"
 
         Widget:

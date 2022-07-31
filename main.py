@@ -4,11 +4,13 @@ from kivy.core.window import Window
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.dialog import MDDialog
 from kivy.lang import Builder
-from kivymd.uix.pickers import MDDatePicker
+from kivymd.uix.picker import MDDatePicker
 from kivymd.uix.button import MDFlatButton
+from kivymd.uix.picker import MDThemePicker
 import datetime
 import pymysql
 import hashlib
+import kivymd as kkk
 #from tkinter import *
 
 # root = Tk()
@@ -62,7 +64,9 @@ class Dez(MDApp):
         self.typedez.dismiss()
 
     def build(self):
-        self.theme_cls.primary_palette = "Indigo"
+        self.theme_cls.primary_palette = "BlueGray"
+        self.theme_cls.primary_hue = "300"
+        self.theme_cls.theme_style = "Light"
         return self.screen
 
     def rec_to_base(self):
@@ -84,15 +88,19 @@ class Dez(MDApp):
             oneRow = cursor.fetchone()
 
             if oneRow == None:
-                cursor = connection.cursor()
-                sql = f'INSERT INTO {p_nametable} (code, type, manufacturer, name, ' \
-                      'structure, used, expiration_date, packing, ' \
-                      'comment) ' \
-                      'VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)'
-                cursor.execute(sql, (hash_field, p_list[0], p_list[1], p_list[2], p_list[3],p_list[4],p_list[5],p_list[6],p_list[7]))
-                connection.commit()
-                self.show_information_dialog("Запись прошла успешно!")
-                self.clear_fileds()
+                if len(p_list) > 0:
+                    cursor = connection.cursor()
+                    sql = f'INSERT INTO {p_nametable} (code, type, manufacturer, name, ' \
+                          'structure, used, expiration_date, packing, ' \
+                          'comment) ' \
+                          'VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+                    cursor.execute(sql, (hash_field, p_list[0], p_list[1], p_list[2], p_list[3],p_list[4],p_list[5],p_list[6],p_list[7]))
+                    connection.commit()
+                    self.show_information_dialog("Запись прошла успешно!")
+                    self.clear_fileds()
+                else:
+                    self.show_information_dialog("Поля не заполнены!")
+                    self.clear_fileds()
             else:
                 self.show_information_dialog("Такая запись уже существует!")
         except:
@@ -118,10 +126,12 @@ class Dez(MDApp):
                 if len(str_v) > 0:
                     hash_str = hash_str + str_v[0:3]
                     list_f.append(str_v)
+                else:
+                    list_f.append("")
             except:
                 pass
         #print(list_f)
-
+        print(kkk.__version__)
         hash_object = hashlib.md5(hash_str.encode())
         if status > 0:
             return hash_object.hexdigest()
@@ -149,4 +159,8 @@ class Dez(MDApp):
                     self.screen.ids[i].text = ""
             except:
                 pass
+
+    def show_theme_picker(self):
+        theme_dialog = MDColorPicker()
+        theme_dialog.open()
 Dez().run()
