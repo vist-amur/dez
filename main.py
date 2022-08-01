@@ -12,6 +12,7 @@ import pymysql
 import hashlib
 import kivymd as kkk
 from kivy.config import Config
+import os.path
 #from tkinter import *
 
 # root = Tk()
@@ -29,9 +30,11 @@ class Dez(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.screen = Builder.load_file('dez.kv')
-        menu_items = [{"icon": "git", "text": f"Item {i}","viewclass": "OneLineListItem", "on_release": lambda x=f"Item {i}": self.set_item(x)} for i in range(5)]
-        menu_items_dez = [{"icon": "git", "text": f"Item {i}", "viewclass": "OneLineListItem",
-                       "on_release": lambda x=f"Item {i}": self.set_item_dez(x)} for i in range(9)]
+        #menu_items = [{"icon": "git", "text": f"Item {i}","viewclass": "OneLineListItem", "on_release": lambda x=f"Item {i}": self.set_item(x)} for i in range(5)]
+        menu_items = self.read_files_type('manufacturers.txt')
+        menu_items_dez = self.read_files_type('typedez.txt',1)
+        #menu_items_dez = [{"icon": "git", "text": f"Item {i}", "viewclass": "OneLineListItem",
+        #               "on_release": lambda x=f"Item {i}": self.set_item_dez(x)} for i in range(9)]
         self.menu = MDDropdownMenu(
             caller=self.screen.ids.proizv,
             items=menu_items,
@@ -39,7 +42,7 @@ class Dez(MDApp):
             width_mult=4,
         )
         self.typedez = MDDropdownMenu(
-            caller=self.screen.ids.proizv,
+            caller=self.screen.ids.type,
             items=menu_items_dez,
             position="bottom",
             width_mult=4,
@@ -101,6 +104,14 @@ class Dez(MDApp):
                     connection.commit()
                     self.show_information_dialog("Запись прошла успешно!")
                     self.clear_fileds()
+                    if len(p_list[1]) > 0:
+                        self.write_files_type('manufacturers.txt', p_list[1].strip())
+                        menu_items = self.read_files_type('manufacturers.txt')
+                        self.menu.items = menu_items
+                    if len(p_list[0]) > 0:
+                        self.write_files_type('typedez.txt', p_list[0].strip())
+                        menu_items_dez = self.read_files_type('typedez.txt')
+                        self.typedez.items = menu_items_dez
                 else:
                     self.show_information_dialog("Поля не заполнены!")
                     self.clear_fileds()
@@ -127,7 +138,7 @@ class Dez(MDApp):
             try:
                 str_v = self.screen.ids[i].text.strip()
                 if len(str_v) > 0:
-                    hash_str = hash_str + str_v[0:3]
+                    hash_str = hash_str + str_v[0:35]
                     list_f.append(str_v)
                 else:
                     list_f.append("")
@@ -166,4 +177,23 @@ class Dez(MDApp):
     def show_theme_picker(self):
         theme_dialog = MDColorPicker()
         theme_dialog.open()
+
+    def read_files_type(self, p_file, status=0):
+        if not os.path.exists(p_file):
+            return []
+        with open(p_file, "r", encoding="utf-8") as file:
+            contents = file.readlines()
+            if status == 0:
+                ret = [{"icon": "git", "text": f"{y}","viewclass": "OneLineListItem", "on_release": lambda x=y: self.set_item(x)} for i,y in enumerate(contents)]
+            else:
+                ret = [{"icon": "git", "text": f"{y}", "viewclass": "OneLineListItem",
+                        "on_release": lambda x=y: self.set_item_dez(x)} for i, y in enumerate(contents)]
+        return ret
+
+    def write_files_type(self, p_file, text):
+        if not os.path.exists(p_file):
+            return False
+        with open(p_file, "a", encoding="utf-8") as file:
+            contents = file.write(text+"\n")
+        return True
 Dez().run()
