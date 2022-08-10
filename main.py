@@ -10,6 +10,10 @@ from kivymd.uix.picker import MDDatePicker
 from kivymd.uix.picker import MDThemePicker
 from hashlib import sha256, md5
 from kivy.animation import Animation
+from kivy.utils import platform
+if platform == "android":
+    from android.permissions import request_permissions, Permission
+    request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE, Permission.INTERNET])
 
 
 class Dez(MDApp):
@@ -57,7 +61,7 @@ class Dez(MDApp):
 
     def rec_to_base(self):
         p_json = self.accum_fields()
-        p_json['token_flask'] = "0516e4d8c9c108df2695a18c084185dc7acca45ef4e643b39c9bdc296b6848ee"
+        p_json['token_flask'] = self.get_token()
         json_param = p_json
         check = requests.post('http://37.77.105.58:5000/checkcode', json=json_param)
         if check.status_code == 200:
@@ -148,9 +152,14 @@ class Dez(MDApp):
 
     def write_files_type(self, p_file, text):
         if not os.path.exists(p_file):
-            return False
+            f = open(p_file, "x", encoding="utf-8")
+            f.close()
+        with open(p_file, 'r') as file:
+            p_list = file.readlines()
+            file.close()
         with open(p_file, "a", encoding="utf-8") as file:
-            contents = file.write(text + "\n")
+            if text + "\n" not in p_list:
+                contents = file.write(text + "\n")
         return True
 
     def set_token(self, p_text):
@@ -166,11 +175,27 @@ class Dez(MDApp):
         self.screen.ids['token'].text = ""
         return True
 
+    def get_token(self):
+        if not os.path.exists('token.txt'):
+            return ""
+
+        with open('token.txt', 'r') as file:
+            p_list = file.readline()
+            file.close()
+        return p_list.strip()
+
     def start_animation(self):
         lbl_1 = self.root.ids.lbl_1
 
         Animation(
             opacity=1, y=lbl_1.height * 2, d=0.9, t="out_elastic"
+        ).start(lbl_1)
+
+    def notvision(self):
+        lbl_1 = self.root.ids.lbl_1
+
+        Animation(
+            opacity=0, y=-lbl_1.height * 2, d=0.9, t="out_elastic",
         ).start(lbl_1)
 
 
