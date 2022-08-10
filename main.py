@@ -78,7 +78,7 @@ class Dez(MDApp):
                 self.menu.items = menu_items
             if len(p_json['type']) > 0:
                 self.write_files_type('typedez.txt', p_json['type'].strip())
-                menu_items_dez = self.read_files_type('typedez.txt')
+                menu_items_dez = self.read_files_type('typedez.txt',1)
                 self.typedez.items = menu_items_dez
         else:
             self.show_information_dialog("Ошибка записи!" + " " + str(resp.status_code))
