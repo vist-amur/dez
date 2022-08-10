@@ -1,3 +1,8 @@
+<CommonLabel@MDLabel>
+    opacity: 0
+    adaptive_height: True
+    halign: "center"
+    y: -self.height
 
 Screen:
     BoxLayout:
@@ -12,7 +17,7 @@ Screen:
         ScreenManager:
             id: screen_manager
            # MDScreen:
-            Screen:
+            MDScreen:
                 name: "scr1"
                 BoxLayout:
                     size_hint_y: 0.91
@@ -93,10 +98,12 @@ Screen:
 #                        size_hint: [.2, .1]
 
 
-            Screen:
+            MDScreen:
                 name: "scr2"
                 StackLayout:
                     orientation: "lr-tb"
+                    #spacing: 4
+                    #size_hint_y: None
                     #padding: "10dp"
                     #spacing: 4
                     #size_hint_x: 0.94
@@ -112,16 +119,29 @@ Screen:
                         text: "Dezreestr version 1.0"
                         halign: "center"
                         size_hint: [1.05, None]
-#            Screen:
-#                name: "scr3"
-#                StackLayout:
-#                    orientation: "lr-bt"
-#                    MDFillRoundFlatIconButton:
-#                        icon: "android"
-#                        text: "Выбрать цветовую счему"
-#                        #pos_hint: {"center_x": 1.0, "center_y": 1.0}
-#                        size_hint: [.2, .1]
-#                        on_release: app.show_theme_picker()
+            MDScreen:
+                name: "scr3"
+                on_enter: app.start_animation()
+                on_leave: self.opacity = 0
+                StackLayout:
+                    padding: "100dp"
+                    spacing: 4
+                    #size_hint_y: None
+                    height: self.minimum_height
+                    CommonLabel:
+                        id: lbl_1
+                        font_size: "32sp"
+                        text: "Настройки"
+                    MDTextField:
+                        id: token
+                        hint_text: "Токен для доступа к API"
+                        helper_text: "Токен для доступа к API. Для записи нажмите Ввод или совершите двойное касание"
+                        helper_text_mode: "on_focus"
+                        normal_color: '#3212342'
+                        on_double_tap: app.set_token(self.text)
+                        on_text_validate: app.set_token(self.text)
+
+
 
     MDNavigationDrawer:
         id: nav_draw
@@ -162,18 +182,18 @@ Screen:
                         icon: "notebook-plus"
                 OneLineAvatarListItem:
                     on_press:
+                       # root.func()
+                        screen_manager.current = "scr3"
+                        nav_draw.set_state('close')
+                    text: "Настройки"
+                    IconLeftWidget:
+                        icon: "cog-outline"
+                OneLineAvatarListItem:
+                    on_press:
                         screen_manager.current = "scr2"
                         nav_draw.set_state('close')
                     text: "About"
                     IconLeftWidget:
                         icon: 'information'
-#                OneLineAvatarListItem:
-#                    on_press:
-#                       # root.func()
-#                        screen_manager.current = "scr3"
-#                        nav_draw.set_state('close')
-#                    text: "Цветовая схема"
-#                    IconLeftWidget:
-#                        icon: "paint"
 
         Widget:
