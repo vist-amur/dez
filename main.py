@@ -63,11 +63,11 @@ class Dez(MDApp):
         p_json = self.accum_fields()
         p_json['token_flask'] = self.get_token()
         json_param = p_json
-        check = requests.post('http://37.77.105.58:5000/checkcode', json=json_param)
+        check = requests.post('/checkcode', json=json_param)
         if check.status_code == 200:
             self.show_information_dialog("Запись уже существует!")
             return False
-        resp = requests.post('http://37.77.105.58:5000/create', json=json_param)
+        resp = requests.post('/create', json=json_param)
         print(resp)
         if resp.status_code == 200:
             self.show_information_dialog("Запись прошла успешно!")
